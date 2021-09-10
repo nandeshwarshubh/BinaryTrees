@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class TransformToLeftClonedTree {
+public class DiameterOfABinaryTree {
 
     public static class Node {
 
@@ -24,17 +24,63 @@ public class TransformToLeftClonedTree {
             }
         }
 
-        public static Node transformToLeftCloned(Node node) {
-            if (node == null) {
-                return null;
-            }
-            Node leftClonedRoot = transformToLeftCloned(node.left);
-            Node rightClonedRoot = transformToLeftCloned(node.right);
+        /*
+         *
+         * Number of edges between the two farthest nodes of a tree
+         * */
+        public static int diameter(Node node) {
 
-            Node newLeft = new Node(node.data, leftClonedRoot, null);
-            node.left = newLeft;
-            node.right = rightClonedRoot;
-            return node;
+            if(node == null) {
+                return 0;
+            }
+
+            // maximum distance between two nodes of lhs
+            int ld = diameter(node.left);
+
+            // maximum distance between two nodes of rhs
+            int rd = diameter(node.right);
+
+            // maximum distance between lefts deepest and rights deepest
+            int f = height(node.left) + height(node.right) + 2;
+
+            int diameter = Math.max(ld, Math.max(rd, f));
+            return diameter;
+        }
+
+        //depth of the deepest node
+        public static int height(Node node) {
+            if (node == null) {
+                return -1; //-1 for edges, 0 for nodes
+            }
+            int lh = height(node.left);
+            int rh = height(node.right);
+            int th = Math.max(lh, rh) + 1;
+            return th;
+        }
+
+        static class DiaPair {
+            int ht;
+            int dia;
+        }
+
+        public static DiaPair diameter2(Node node) {
+
+            if(node == null ) {
+                DiaPair bp = new DiaPair();
+                bp.ht = -1;
+                bp.dia = 0;
+                return bp;
+            }
+            DiaPair lp  = diameter2(node.left);
+            DiaPair rp  = diameter2(node.right);
+
+            DiaPair mp = new DiaPair();
+            mp.ht = Math.max(lp.ht, rp.ht) + 1;
+
+            int fes = lp.ht + rp.ht + 2;
+            mp.dia = Math.max(fes, Math.max(lp.dia, rp.dia));
+
+            return mp;
         }
 
 
@@ -44,6 +90,18 @@ public class TransformToLeftClonedTree {
          * 3-pop
          * */
         public static void main(String[] args) {
+
+            /*
+             *               50
+             *           /         \
+             *       25              75
+             *   /      \          /    \
+             * 12        37      62      87
+             *         /           \
+             *       30              70
+             * */
+
+
             Integer[] arr = {50, 25, 12, null, null,
                     37, 30, null, null, null,
                     75, 62, null, 70, null,
@@ -83,7 +141,9 @@ public class TransformToLeftClonedTree {
                 }
             }
 
-
+//            System.out.println(diameter(root));
+            DiaPair p = diameter2(root);
+            System.out.println(p.dia);
         }
     }
 }

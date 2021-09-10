@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class TransformToLeftClonedTree {
+public class PrintSingleChildNodes {
 
     public static class Node {
 
@@ -24,17 +24,20 @@ public class TransformToLeftClonedTree {
             }
         }
 
-        public static Node transformToLeftCloned(Node node) {
-            if (node == null) {
-                return null;
-            }
-            Node leftClonedRoot = transformToLeftCloned(node.left);
-            Node rightClonedRoot = transformToLeftCloned(node.right);
+        public static void printSingleChildNodes(Node node, Node parent) {
 
-            Node newLeft = new Node(node.data, leftClonedRoot, null);
-            node.left = newLeft;
-            node.right = rightClonedRoot;
-            return node;
+            if (node == null) {
+                return;
+            }
+            if (parent != null && parent.left == node && parent.right == null) {
+                System.out.println(node.data);
+            }
+            if (parent != null && parent.right == null && parent.left == null) {
+                System.out.println(node.data);
+            }
+
+            printSingleChildNodes(node.left, node);
+            printSingleChildNodes(node.right, node);
         }
 
 
@@ -44,6 +47,18 @@ public class TransformToLeftClonedTree {
          * 3-pop
          * */
         public static void main(String[] args) {
+
+            /*
+             *               50
+             *           /         \
+             *       25              75
+             *   /      \          /    \
+             * 12        37      62      87
+             *         /           \
+             *       30              70
+             * */
+
+
             Integer[] arr = {50, 25, 12, null, null,
                     37, 30, null, null, null,
                     75, 62, null, 70, null,
@@ -83,7 +98,7 @@ public class TransformToLeftClonedTree {
                 }
             }
 
-
+            printSingleChildNodes(root, null);
         }
     }
 }

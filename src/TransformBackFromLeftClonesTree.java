@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class TransformToLeftClonedTree {
+public class TransformBackFromLeftClonesTree {
 
     public static class Node {
 
@@ -24,16 +24,16 @@ public class TransformToLeftClonedTree {
             }
         }
 
-        public static Node transformToLeftCloned(Node node) {
+        public static Node transformBackFromLeftCloned(Node node) {
             if (node == null) {
                 return null;
             }
-            Node leftClonedRoot = transformToLeftCloned(node.left);
-            Node rightClonedRoot = transformToLeftCloned(node.right);
+            Node lnn = transformBackFromLeftCloned(node.left.left);
+            Node rnn = transformBackFromLeftCloned(node.right);
 
-            Node newLeft = new Node(node.data, leftClonedRoot, null);
-            node.left = newLeft;
-            node.right = rightClonedRoot;
+            node.left = lnn;
+            node.right = rnn;
+
             return node;
         }
 
@@ -44,10 +44,12 @@ public class TransformToLeftClonedTree {
          * 3-pop
          * */
         public static void main(String[] args) {
-            Integer[] arr = {50, 25, 12, null, null,
-                    37, 30, null, null, null,
-                    75, 62, null, 70, null,
-                    null, 87, null, null};
+//            Integer[] arr = {50, 25, 12, null, null,
+//                    37, 30, null, null, null,
+//                    75, 62, null, 70, null,
+//                    null, 87, null, null};
+
+            Integer[] arr = {}; // should be a left clones tree
 
             Stack<Pair> st = new Stack<>();
             Node root = new Node(arr[0], null, null);

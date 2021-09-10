@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class TransformToLeftClonedTree {
+public class RemoveLeaves {
 
     public static class Node {
 
@@ -24,16 +24,19 @@ public class TransformToLeftClonedTree {
             }
         }
 
-        public static Node transformToLeftCloned(Node node) {
+        public static Node removeLeaves(Node node) {
+
             if (node == null) {
                 return null;
             }
-            Node leftClonedRoot = transformToLeftCloned(node.left);
-            Node rightClonedRoot = transformToLeftCloned(node.right);
 
-            Node newLeft = new Node(node.data, leftClonedRoot, null);
-            node.left = newLeft;
-            node.right = rightClonedRoot;
+            if (node.left == null && node.right == null) {
+                return null;
+            }
+
+            node.left = removeLeaves(node.left);
+            node.right = removeLeaves(node.right);
+
             return node;
         }
 
@@ -44,6 +47,18 @@ public class TransformToLeftClonedTree {
          * 3-pop
          * */
         public static void main(String[] args) {
+
+            /*
+             *               50
+             *           /         \
+             *       25              75
+             *   /      \          /    \
+             * 12        37      62      87
+             *         /           \
+             *       30              70
+             * */
+
+
             Integer[] arr = {50, 25, 12, null, null,
                     37, 30, null, null, null,
                     75, 62, null, 70, null,
@@ -83,7 +98,7 @@ public class TransformToLeftClonedTree {
                 }
             }
 
-
+            removeLeaves(root);
         }
     }
 }
